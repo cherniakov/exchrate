@@ -1,6 +1,4 @@
-import datetime
-
-from peewee import SqliteDatabase, Model, IntegerField, DoubleField, DateTimeField
+from peewee import SqliteDatabase, Model, IntegerField, DoubleField, DateTimeField, datetime as peewee_datetime
 
 db = SqliteDatabase('golden-eye.db')
 
@@ -10,13 +8,13 @@ class XRate(Model):
     from_currency = IntegerField()
     to_currency = IntegerField()
     rate = DoubleField()
-    update = DateTimeField(default=datetime.datetime.now)
+    updated = DateTimeField(default=peewee_datetime.datetime.now)
 
     class Meta:
         database = db
         db_table = "xrates"
         indexes = (
-            (('from_currency', 'to_currency'), True),
+            (("from_currency", "to_currency"), True),
         )
 
     def __str__(self):
@@ -26,5 +24,5 @@ class XRate(Model):
 def init_db():
     db.drop_tables(XRate)
     XRate.create_table()
-    XRate.create(from_currency=840, to_currency=980, rote=1)
+    XRate.create(from_currency=840, to_currency=980, rate=1)
     print("db_created!")

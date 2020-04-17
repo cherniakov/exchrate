@@ -11,17 +11,17 @@ class Api(_Api):
         return rate
 
     def _get_privat_rate(self, from_currency):
-        response = requests.get("https://api.privatbank.ua/p24api/pubinfo?exchange&json&coursid=11")
+        response = requests.get("https://api.privatbank.ua/p24api/pubinfo?exchange&json&coursid=11",
+                                method="get")
         response_json = response.json()
         self.log.debug("Privat response: %s" % response_json)
-        usd_rate = self._find_usd_rate(response_json, from_currency)
+        rate = self._find_rate(response_json, from_currency)
 
-        return usd_rate
+        return rate
 
-    def _find_usd_rate(self, response_data, from_currency):
+    def _find_rate(self, response_data, from_currency):
         pr_valute_map = {840: "USD"}
         currency_pr_alias = pr_valute_map[from_currency]
-
         for e in response_data:
             if e["ccy"] == currency_pr_alias:
                 return float(e["sale"])

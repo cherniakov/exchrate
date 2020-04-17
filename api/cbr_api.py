@@ -17,11 +17,11 @@ class Api(_Api):
         self.log.debug("response.encoding: %s" % response.encoding)
         response_text = response.text
         self.log.debug("response.text: %s" % response_text)
-        usd_rate = self._find_usd_rate(response_text, from_currency)
+        rate = self._find_rate(response_text, from_currency)
 
-        return usd_rate
+        return rate
 
-    def _find_usd_rate(self, response_text, from_currency):
+    def _find_rate(self, response_text, from_currency):
         root = ET.fromstring(response_text)
         valutes = root.findall("Valute")
 
@@ -32,4 +32,4 @@ class Api(_Api):
             if valute.find('CharCode').text == currency_cbr_alias:
                 return float(valute.find("Value").text.replace(",", "."))
 
-        raise ValueError("Invalid Cbr response: USD not found ")
+        raise ValueError("Invalid Cbr response: %s not found " % from_currency)

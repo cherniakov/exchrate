@@ -61,5 +61,6 @@ def init_db():
 
     XRate.create(from_currency=840, to_currency=980, rate=1)
     XRate.create(from_currency=840, to_currency=643, rate=1)
-
+    XRate.create(from_currency=978, to_currency=980, rate=1)
+    XRate.create(from_currency=1000, to_currency=840, rate=1)
     print("db_created!")

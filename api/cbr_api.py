@@ -1,5 +1,4 @@
 import xml.etree.ElementTree as ET
-import requests
 
 from api import _Api
 
@@ -8,15 +7,12 @@ class Api(_Api):
     def __init__(self):
         super().__init__("CrbApi")
 
-    def _updata_rate(self, xrate):
+    def _update_rate(self, xrate):
         rate = self._get_cbr_rate(xrate.from_currency)
         return rate
 
     def _get_cbr_rate(self, from_currency):
-        # response = requests.get("http://www.cbr.ru/scripts/XML_daily.asp")
-        response = self._send_request(url="http://www.cbr.ru/scripts/XML_daily.asp",
-                                      method="get")
-
+        response = self._send_request(url="http://www.cbr.ru/scripts/XML_daily.asp", method="get")
         self.log.debug("response.encoding: %s" % response.encoding)
         response_text = response.text
         self.log.debug("response.text: %s" % response_text)

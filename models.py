@@ -16,6 +16,7 @@ class XRate(_Model):
     to_currency = IntegerField()
     rate = DoubleField()
     updated = DateTimeField(default=peewee_datetime.datetime.now)
+    module = CharField(max_length=100)
 
     class Meta:
         db_table = "xrates"
@@ -59,8 +60,9 @@ def init_db():
         m.drop_table()
         m.create_table()
 
-    XRate.create(from_currency=840, to_currency=980, rate=1)
-    XRate.create(from_currency=840, to_currency=643, rate=1)
-    XRate.create(from_currency=978, to_currency=980, rate=1)
-    XRate.create(from_currency=1000, to_currency=840, rate=1)
+    XRate.create(from_currency=840, to_currency=980, rate=1, module="privat_api")
+    XRate.create(from_currency=840, to_currency=643, rate=1, module="cbr_api")
+    XRate.create(from_currency=1000, to_currency=840, rate=1, module="privat_api")
+    XRate.create(from_currency=1000, to_currency=980, rate=1, module="cryptonator_api")
+    XRate.create(from_currency=1000, to_currency=643, rate=1, module="cryptonator_api")
     print("db_created!")

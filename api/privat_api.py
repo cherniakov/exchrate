@@ -6,7 +6,7 @@ class Api(_Api):
     def __init__(self):
         super().__init__("PrivatApi")
 
-    def _updata_rate(self, xrate):
+    def _update_rate(self, xrate):
         rate = self._get_privat_rate(xrate.from_currency)
         return rate
 

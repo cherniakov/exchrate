@@ -21,6 +21,8 @@ class Api(_Api):
         url = f"https://api.cryptonator.com/api/ticker/{url_end}"
 
         response = self._send_request(url=url, method="get")
+
+
         response_json = response.json()
         self.log.debug("Cryptonator response: %s" % response_json)
         rate = self._find_rate(response_json)

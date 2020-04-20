@@ -1,3 +1,4 @@
+from flask import request
 from app import app
 import controllers
 
@@ -10,3 +11,8 @@ def hello_world():
 @app.route('/xrates')
 def view_rates():
     return controllers.get_all_rates()
+
+
+@app.route('/api/xrates/<fmt>')
+def api_rates(fmt):
+    return f"Rates with format: {fmt}. Args: {request.args}"

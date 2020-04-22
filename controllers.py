@@ -1,6 +1,8 @@
-from flask import render_template, make_response, request, jsonify
-from models import XRate
+from flask import render_template, make_response, request, jsonify, redirect, url_for
+from models import XRate, ApiLog
 import xmltodict
+import api
+
 
 class BaseController:
     def __init__(self):
@@ -28,9 +30,9 @@ class GetApiRates(BaseController):
         xrates = self._filter(xrates)
 
         if fmt == "json":
-            return self._get_json()
+            return self._get_json(xrates)
         elif fmt == "xml":
-            return self._get_xml()
+            return self._get_xml(xrates)
         raise ValueError(f"Unknowm fmt: {fmt}")
 
     def _filter(self, xrates):
@@ -50,3 +52,28 @@ class GetApiRates(BaseController):
         d = {"xrates": {"xrate": [
             {"from": rate.from_currency, "to": rate.to_currency, "rate": rate.rate} for rate in xrates]}}
         return make_response(xmltodict.unparse(d), {'Content-Type': 'text/xml'})
+
+
+class UpdateRates(BaseController):
+    def _call(self, from_currency, to_currency):
+        if not from_currency and not to_currency:
+            self._update_all()
+
+        elif from_currency and to_currency:
+            self._update_rate(from_currency, to_currency)
+
+        else:
+            ValueError("from_currency and to_currency")
+        return redirect(url_for("view_rates"))
+
+    def _update_rate(self, from_currency, to_currency):
+        api.update_rate(from_currency, to_currency)
+
+    def _update_all(self):
+        xrates = XRate.select()
+        for rate in xrates:
+            try:
+                self._update_rate(rate.from_currency, rate.to_currency)
+            except Exception as ex:
+                print(ex)
+

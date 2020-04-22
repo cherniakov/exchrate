@@ -16,3 +16,10 @@ def view_rates():
 @app.route('/api/xrates/<fmt>')
 def api_rates(fmt):
     return f"Rates with format: {fmt}. Args: {request.args}"
+
+
+@app.route("/update/<int:from_currency>/<int:to_currency>")
+@app.route("/update/all")
+def update_xrates(from_currency=None, to_currency=None):
+    return controllers.UpdateRates().call(from_currency, to_currency)
+

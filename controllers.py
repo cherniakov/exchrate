@@ -77,3 +77,9 @@ class UpdateRates(BaseController):
             except Exception as ex:
                 print(ex)
 
+
+class ViewLogs(BaseController):
+    def _call(self):
+        page = int(self.requst.args.get("page", 1))
+        logs = ApiLog.select().paginate(page, 10).order_by(ApiLog.id.desc())
+        return render_template("logs.html", logs=logs)

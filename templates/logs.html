@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Api Logs</title>
+</head>
+<body>
+    {% if not logs %}
+    <h1>No Logs</h1>
+    {% endif %}
+    <ur>
+        {% for l in logs %}
+        <li>{{l.json()}} </li>
+        {% endfor %}
+    </ur>
+</body>
+</html>

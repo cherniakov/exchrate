@@ -38,6 +38,10 @@ class ApiLog(_Model):
     finished = DateTimeField()
     error = TextField(null=True)
 
+    def json(self):
+        data = self.__data__
+        return data
+
     class Meta:
         db_name = "api_logs"
 
